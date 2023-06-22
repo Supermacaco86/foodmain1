@@ -6,7 +6,22 @@ const getRecipe = async() => {
     const apiInfo = await apiInfoUrl.data.results.map((e)=>{
         return{
             name: e.title,
-            tipo: e.vegetarian}     
+            imagen: e.image,
+            tipo: e.dishTypes,
+            dieta: e.diets,
+            resumen: e.summary,
+            puntuacion: e.aggregateLikes,
+            salud: e.healthScore,
+            pasos: e.analyzedInstructions.map((e)=>{
+                return{
+                    paso: e.steps.map((e)=>{
+                        return{
+                            paso: e.step
+                        }
+                    })
+                }
+            })
+        }     
     })
   return apiInfo
 }
@@ -16,6 +31,8 @@ const recipe = async(req, res)=>{
     const allRecipes = await getRecipe();
     res.status(200).send(allRecipes)       
 }
+
+
 
 module.exports = {
     recipe
